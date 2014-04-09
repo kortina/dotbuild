@@ -1,3 +1,6 @@
+from StringIO import StringIO
+
+
 def mock_walk(*args, **kwargs):
     """Returns mocked walk (with followlinks=True) of directory that looks
        like:
@@ -28,5 +31,21 @@ def mock_walk(*args, **kwargs):
              ('./friends', ['danny'], []),
              ('./friends/danny', ['dotfiles-user'], []),
              ('./friends/danny/dotfiles-user', [], ['inputrc'])]
-    iterator = iter(items)
-    yield iterator.next()
+    return iter(items)
+
+
+class ContextualStringIO(StringIO):
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *args):
+        self.close()
+        return False
+
+
+def mock_open(*args, **kwargs):
+    mocked = {'./dotfiles-danny/inputrc': 'Space: magic-space',
+              './dotfiles-user/bashrc': 'HISTFILESIZE=100000000',
+              './dotfiles-user/inputrc': 'set show-all-if-ambiguous on',
+              './dotfiles-z-team/bashrc': 'export EDITOR=vim'}
+    return ContextualStringIO(mocked[args[0]])
