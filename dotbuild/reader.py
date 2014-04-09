@@ -1,6 +1,5 @@
-from collections import defaultdict
 import os
-import re
+from .dotfile import Dotfile
 
 
 class Reader(object):
@@ -12,29 +11,34 @@ class Reader(object):
 
     def __init__(self,  dotfiles_dir):
         self.dotfiles_dir = dotfiles_dir
-        self.file_map = defaultdict(lambda: {self.MODULES: []})
+        self.dotfiles = {}
 
-    def _dir_has_dotfiles_prefix(self, name):
-        return re.match(r"^\.\/dotfiles-", name) is not None
-
-    def _dir_is_user_dotfiles(self, name):
-        return name == "./dotfiles-user"
-
-    def _contents(self, dirname, filename):
-        filepath = os.path.join(dirname, filename)
+    def _contents(self, dirpath, filename):
+        filepath = os.path.join(dirpath, filename)
         with open(filepath, 'r') as f:
             contents = f.read()
         return contents
 
-    def _file_map(self):
+    def read(self):
+        """
+        scan for dotfiles in current working directory and generate dictionary
+        to store all of the filenames and content
+
+        eg:
+        {'inputrc': {'modules': [{'name': './dotfiles-danny',
+                                  'contents': ...}],
+                     'user': {'name': './dotfiles-user', 'contents': ...}},
+        {'bashrc': {'modules': [{'name': './dotfiles-z-team',
+                                 'contents': ...}],
+                    'user': {'name': './dotfiles-user', 'contents': ...}},
+            ...
+        """
         for item in os.walk(self.dotfiles_dir):
-            dirname = item[0]
-            if not self._dir_has_dotfiles_prefix(dirname):
+            dirpath = item[0]
+            if not Dotfile.has_dotfiles_prefix(dirpath):
                 continue
             for filename in item[2]:
-                new = {self.NAME: dirname,
-                       self.CONTENTS: self._contents(dirname, filename)}
-                if self._dir_is_user_dotfiles(dirname):
-                    self.file_map[filename][self.USER] = new
-                else:
-                    self.file_map[filename][self.MODULES].append(new)
+                contents = self._contents(dirpath, filename)
+                if not filename in self.dotfiles.keys():
+                    self.dotfiles[filename] = Dotfile(filename)
+                self.dotfiles[filename].add_file_at_path(dirpath, contents)
