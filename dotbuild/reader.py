@@ -3,11 +3,6 @@ from .dotfile import Dotfile
 
 
 class Reader(object):
-    # filemap keys
-    MODULES = 'modules'
-    USER = 'user'
-    NAME = 'name'
-    CONTENTS = 'contents'
 
     def __init__(self,  dotfiles_dir):
         self.dotfiles_dir = dotfiles_dir
@@ -24,14 +19,6 @@ class Reader(object):
         scan for dotfiles in current working directory and generate dictionary
         to store all of the filenames and content
 
-        eg:
-        {'inputrc': {'modules': [{'name': './dotfiles-danny',
-                                  'contents': ...}],
-                     'user': {'name': './dotfiles-user', 'contents': ...}},
-        {'bashrc': {'modules': [{'name': './dotfiles-z-team',
-                                 'contents': ...}],
-                    'user': {'name': './dotfiles-user', 'contents': ...}},
-            ...
         """
         for item in os.walk(self.dotfiles_dir):
             dirpath = item[0]

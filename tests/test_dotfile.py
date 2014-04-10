@@ -9,3 +9,10 @@ class DotfileTests(TestCase):
         self.assertFalse(Dotfile.has_dotfiles_prefix("ndotfiles-user"))
         self.assertTrue(Dotfile.is_user_dotfile("./dotfiles-user"))
         self.assertFalse(Dotfile.is_user_dotfile("./dotfiles-team"))
+
+    def test_aggregate(self):
+        d = Dotfile("inputrc")
+        d.add_file_at_path("./dotfiles-a", "1")
+        d.add_file_at_path("./dotfiles-user", "3")
+        d.add_file_at_path("./dotfiles-z", "2")
+        self.assertEqual(d.aggregated_contents(), "\n1\n2\n3")
