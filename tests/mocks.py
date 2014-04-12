@@ -1,6 +1,14 @@
 from StringIO import StringIO
 
 
+def get_yes_input(*args, **kwargs):
+    return "y"
+
+
+def get_no_input(*args, **kwargs):
+    return "n"
+
+
 def mock_walk(*args, **kwargs):
     """Returns mocked walk (with followlinks=True) of directory that looks
        like:
