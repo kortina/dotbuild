@@ -57,7 +57,7 @@ We recommend the following strategy for managing your `dotfiles` repos:
 * Maintan a project on your personal github containing all of your `dotfiles`.  
 * Maintain `dotfiles-user` as a local folder in your github `dotfiles` project.
 * Create github repos for your team dotfiles repo(s) and submodule into your own `dotfiles` project.
-* Symlink a friend's `dotfiles-user` directory by submoduling their `dotfiles` repo and symlinking from your `dotfiles` root, eg, <br />`git submoudle add github.com/myfriend/dotfiles friends/myfriend && ln -s friends/myfriend/dotfiles-user dotfiles-myfriend`
+* Include a friend's `dotfiles-user` directory by submoduling their `dotfiles` repo and symlinking from your `dotfiles` root, eg, <br />`git submoudle add github.com/myfriend/dotfiles friends/myfriend && ln -s friends/myfriend/dotfiles-user dotfiles-myfriend`
 
 ## Options
 
