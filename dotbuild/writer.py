@@ -1,3 +1,4 @@
+import logging
 import os
 import sys
 
@@ -24,7 +25,7 @@ class Writer(object):
             os.makedirs(self.build_dirpath)
 
     def _filepath(self):
-        return os.path.join(self.build_dirpath, self.filename)
+        return os.path.abspath(os.path.join(self.build_dirpath, self.filename))
 
     def _symlinkpath(self):
         return os.path.join(self.home_dirpath, self.symlink)
@@ -49,10 +50,12 @@ class Writer(object):
                 if not self._confirm(msg):
                     msg = "Skipping overwrite of {0}"
                     msg = msg.format(self._symlinkpath())
-                    print msg
+                    logging.info(msg)
                     return
             self._remove_symlink()
         os.symlink(self._filepath(), self._symlinkpath())
+        logging.info("Symlinked {0} to {1}".format(self._symlinkpath(),
+                                                   self._filepath()))
 
     def write(self):
         self._create_build_dir()
@@ -64,7 +67,7 @@ class Writer(object):
     def _confirm(self, message):
 
         yes = set(['yes', 'y', 'ye', ''])
-        choice = get_input("{0} [Y\\n]".format(message)).lower()
+        choice = get_input("{0}\n[Y\\n]".format(message)).lower()
         if choice in yes:
             return True
         else:

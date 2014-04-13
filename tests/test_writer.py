@@ -2,6 +2,7 @@ from dotbuild.writer import Writer
 from mock import patch
 from mocks import get_no_input, get_yes_input
 import os
+import shutil
 from . import TestCase
 
 
@@ -12,6 +13,8 @@ class WriterTests(TestCase):
 
     def setUp(self):
         self._destroyFiles()
+        self.writer = Writer("inputrc", "\n3", ".inputrc", True)
+        self.writer.home_dirpath = "./"
 
     def tearDown(self):
         self._destroyFiles()
@@ -20,23 +23,21 @@ class WriterTests(TestCase):
         if Writer._path_exists(self.filename):
             os.remove(self.filename)
         if Writer._path_exists(self.build_dir):
-            os.removedirs(self.build_dir)
+            shutil.rmtree(self.build_dir)
         if Writer._path_exists(self.link):
             os.unlink(self.link)
 
     def test_filepath(self):
-        w = Writer("inputrc", "\n3", ".inputrc", True)
-        self.assertEqual(w._filepath(), self.filename)
+        self.assertEqual(self.writer._filepath(),
+                         os.path.abspath(self.filename))
 
     def test_symlinkpath(self):
-        w = Writer("inputrc", "\n3", ".inputrc", True)
-        self.assertEqual(w._symlinkpath(),
+        writer = Writer("inputrc", "\n3", ".inputrc", True)
+        self.assertEqual(writer._symlinkpath(),
                          os.path.join(os.environ.get('HOME'), ".inputrc"))
 
     def test_write(self):
-        w = Writer("inputrc", "\n3", ".inputrc", True)
-        w.home_dirpath = "./"
-        w.write()
+        self.writer.write()
         with open(self.filename) as f:
             self.assertEqual(f.read(), "\n3")
 
@@ -46,10 +47,8 @@ class WriterTests(TestCase):
         with open(self.link, 'w+') as f:
             f.write('hi')
 
-        w = Writer("inputrc", "\n3", ".inputrc", True)
-        w.home_dirpath = "./"
         with patch('dotbuild.writer.get_input', get_no_input):
-            w.write()
+            self.writer.write()
         with open(self.link) as f:
             self.assertEqual(f.read(), "hi")
 
@@ -59,10 +58,8 @@ class WriterTests(TestCase):
         with open(self.link, 'w+') as f:
             f.write('hi')
 
-        w = Writer("inputrc", "\n3", ".inputrc", True)
-        w.home_dirpath = "./"
         with patch('dotbuild.writer.get_input', get_yes_input):
-            w.write()
+            self.writer.write()
         with open(self.link) as f:
             self.assertEqual(f.read(), "\n3")
 
