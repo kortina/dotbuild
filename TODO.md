@@ -1,4 +1,7 @@
 
+figure out how to handle directories (rsync merge them?)
+
+
 Add these options
 
     --exclude

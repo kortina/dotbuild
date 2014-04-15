@@ -60,7 +60,9 @@ class Writer(object):
     def write(self):
         self._create_build_dir()
         f = open(self._filepath(), 'w+')
-        f.write(self.contents)
+        # need to utf8 encode writing so we don't fail when writing unicode
+        # chars
+        f.write(self.contents.encode('utf8'))
         f.close()
         self._create_symlink()
 

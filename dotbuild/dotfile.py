@@ -35,7 +35,9 @@ class Dotfile(object):
     def _append_contents(self, contents, dotfile):
         if dotfile.contents:
             contents += u("\n")
-            contents += u(dotfile.contents)
+            # need to string-escape so unicode doesn't break when it encounters
+            # escaped chars like \] in a file
+            contents += u(dotfile.contents.encode('string-escape'))
         return contents
 
     def aggregated_contents(self):
