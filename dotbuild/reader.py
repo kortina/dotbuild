@@ -7,6 +7,7 @@ class Reader(object):
     def __init__(self,  dotfiles_dir):
         self.dotfiles_dir = dotfiles_dir
         self.dotfiles = {}
+        self.dotdirs = {}
 
     def _contents(self, dirpath, filename):
         filepath = os.path.join(dirpath, filename)

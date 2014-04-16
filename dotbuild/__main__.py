@@ -29,7 +29,7 @@ def main():
     for filename, dotfile in reader.dotfiles.iteritems():
         writer = Writer(filename=filename,
                         contents=dotfile.aggregated_contents(),
-                        symlink=dotfile.filename,
+                        symlink=dotfile.linkname,
                         confirm_overwrite=confirm_overwrite)
         writer.write()
     hooks.run_post()

@@ -42,6 +42,41 @@ def mock_walk(*args, **kwargs):
     return iter(items)
 
 
+def mock_walk_dirs(*args, **kwargs):
+    """Returns mocked walk (with followlinks=True) of directory that looks
+       like:
+
+        dotfiles-user
+            vim
+                bundle
+                    pep8
+                        README
+        dotfiles-z
+            vim
+                bundle
+                    ctrlp
+                        README
+
+        example usage:
+
+        with patch('os.walk', new=mock_walk_dirs):
+            for f in os.walk('.'):
+                print f
+    """
+
+    items = [('.', ['dotfiles-user',
+                    'dotfiles-z'], []),
+             ('./dotfiles-user', ['vim'], []),
+             ('./dotfiles-user/vim', ['bundle'], []),
+             ('./dotfiles-user/vim/bundle', ['pep8'], []),
+             ('./dotfiles-user/vim/bundle/pep8', [], ['README']),
+             ('./dotfiles-z', ['vim'], []),
+             ('./dotfiles-z/vim', ['bundle'], []),
+             ('./dotfiles-z/vim/bundle', ['ctrlp'], []),
+             ('./dotfiles-z/vim/bundle/ctrlp', [], ['README'])]
+    return iter(items)
+
+
 class ContextualStringIO(StringIO):
     def __enter__(self):
         return self

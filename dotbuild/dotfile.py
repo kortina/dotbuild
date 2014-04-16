@@ -9,11 +9,42 @@ class DotfileModule(object):
         self.contents = contents
 
 
+class Dotdir(object):
+    """Right now, this is pretty dumb, in that there can be only one dotfile
+    directory, and no complicated merging happens.
+
+    For example, suppose you have:
+
+    dotfiles-a vim bundle A dotfiles-b vim bundle B
+
+    The build directory will contain the last dotfile dir scanned, build vim
+    bundle B
+
+    And ~/.vim will symlink to build/dotfiles-b.
+
+    As with dotfiles, dirs found in the dotfiles-user dir take precedence.
+
+    So a scan of dotfiles-user vim bundle A dotfiles-z vim bundle B
+
+    Will result in a symlink to the build dir containing `vim/bundle/A` from
+    the dotfiles-user dir
+    """
+
+    def __init__(self,  dirname, dirpath):
+        self.dirname = dirname
+        self.dirpath = dirpath
+
+    def update_dirpath(self, new_dirpath):
+        if self.dirpath and re.match(r"\/dotfiles-user\/", self.dirpath):
+            return
+        self.dirpath = new_dirpath
+
+
 class Dotfile(object):
 
     def __init__(self,  filename):
-        self.name = filename
-        self.filename = u(".") + u(filename)
+        self.filename = filename
+        self.linkname = u(".") + u(filename)
         self.dotfiles = []
         self.user_dotfile = None
 
