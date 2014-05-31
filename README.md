@@ -66,6 +66,14 @@ We recommend the following strategy for managing your `dotfiles` repos:
                 Skip confirming deletion of existing dotfiles that would be overwritten
 
 
+## Pre and Post Hooks
+
+Dotbuild can run custom pre and post build hooks you define in your `dotfiles` home as
+
+    dotbuild-pre.sh  # dotbuild runs this before the build
+    dotbuild-post.sh # dotbuild runs this after the build
+
+
 ## Contributing
 
 Open up a pull request, making sure to add tests for any new functionality.

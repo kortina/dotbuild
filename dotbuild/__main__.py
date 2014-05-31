@@ -19,7 +19,7 @@ from dotbuild.writer import Writer
 from dotbuild import hooks
 
 
-if __name__ == '__main__':
+def main():
     logging.basicConfig(level=logging.INFO)
     args = argparser.parse_args()
     confirm_overwrite = (args.no_confirm is False)
@@ -33,3 +33,6 @@ if __name__ == '__main__':
                         confirm_overwrite=confirm_overwrite)
         writer.write()
     hooks.run_post()
+
+if __name__ == '__main__':
+    main()

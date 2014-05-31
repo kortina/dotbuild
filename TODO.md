@@ -16,13 +16,3 @@ Add these options
                 NB: this would also exlclude the default direcotry, `dotfiles-user`
                 
                 Accepts patterns, regex style, like --exclude=team.*
-                
-
-Add hooks
-
-## Pre and Post Hooks
-
-Dotbuild can run custom pre and post build hooks you define in your `dotfiles` home as
-
-    dotbuild-pre.sh  # dotbuild runs this before the build
-    dotbuild-post.sh # dotbuild runs this after the build
