@@ -16,12 +16,14 @@ if __package__ in ('', None):
 from dotbuild.argparser import argparser
 from dotbuild.reader import Reader
 from dotbuild.writer import Writer
+from dotbuild import hooks
 
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
     args = argparser.parse_args()
     confirm_overwrite = (args.no_confirm is False)
+    hooks.run_pre()
     reader = Reader(".")
     reader.read()
     for filename, dotfile in reader.dotfiles.iteritems():
@@ -30,3 +32,4 @@ if __name__ == '__main__':
                         symlink=dotfile.filename,
                         confirm_overwrite=confirm_overwrite)
         writer.write()
+    hooks.run_post()
