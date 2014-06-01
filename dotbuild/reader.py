@@ -9,8 +9,8 @@ class Reader(object):
         self.dotfiles = {}
         self.dotdirs = {}
 
-    def _contents(self, dirpath, filename):
-        filepath = os.path.join(dirpath, filename)
+    def _contents(self, dotfile_dir, filename):
+        filepath = os.path.join(dotfile_dir, filename)
         with open(filepath, 'r') as f:
             contents = f.read()
         return contents
@@ -22,11 +22,12 @@ class Reader(object):
 
         """
         for item in os.walk(self.dotfiles_dir):
-            dirpath = item[0]
-            if not Dotfile.has_dotfiles_prefix(dirpath):
+            dotfile_dir = item[0]
+            if not Dotfile.has_dotfiles_prefix(dotfile_dir):
                 continue
             for filename in item[2]:
-                contents = self._contents(dirpath, filename)
+                contents = self._contents(dotfile_dir, filename)
                 if not filename in self.dotfiles.keys():
                     self.dotfiles[filename] = Dotfile(filename)
-                self.dotfiles[filename].add_file_at_path(dirpath, contents)
+                self.dotfiles[filename].add_file_from_source(dotfile_dir,
+                                                             contents)

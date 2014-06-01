@@ -12,7 +12,7 @@ class DotfileTests(TestCase):
 
     def test_aggregate(self):
         d = Dotfile("inputrc")
-        d.add_file_at_path("./dotfiles-a", "1")
-        d.add_file_at_path("./dotfiles-user", "3")
-        d.add_file_at_path("./dotfiles-z", "2")
+        d.add_file_from_source("./dotfiles-a", "1")
+        d.add_file_from_source("./dotfiles-user", "3")
+        d.add_file_from_source("./dotfiles-z", "2")
         self.assertEqual(d.aggregated_contents(), "\n1\n2\n3")
