@@ -11,13 +11,7 @@ class ReaderTests(TestCase):
         with patch('os.walk', new=mocks.mock_walk):
             with patch('__builtin__.open', new=mocks.mock_open, create=True):
                 r.read()
-        self.assertEqual(r.dotfiles['inputrc'].dotfiles[0].dotfile_source,
-                         "./dotfiles-danny")
-        self.assertEqual(r.dotfiles['inputrc'].dotfiles[0].contents,
-                         "Space: magic-space")
-        self.assertEqual(r.dotfiles['bashrc'].dotfiles[0].dotfile_source,
-                         "./dotfiles-z-team")
-        self.assertEqual(r.dotfiles['inputrc'].user_dotfile.dotfile_source,
-                         "./dotfiles-user")
-        self.assertEqual(r.dotfiles['inputrc'].user_dotfile.contents,
-                         "set show-all-if-ambiguous on")
+        self.assertEqual(r.dotfiles.files['inputrc'].aggregated_contents(),
+                         "Space: magic-space\nset show-all-if-ambiguous on")
+        self.assertEqual(r.dotfiles.files['sub/somerc'].aggregated_contents(),
+                         "export EDITOR=vim\nHISTFILESIZE=100000000")

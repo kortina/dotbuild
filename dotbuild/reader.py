@@ -1,16 +1,15 @@
 import os
-from .dotfile import Dotfile
+from .dotfile import Dotfile, DotfileMap
 
 
 class Reader(object):
 
     def __init__(self,  dotfiles_dir):
         self.dotfiles_dir = dotfiles_dir
-        self.dotfiles = {}
-        self.dotdirs = {}
+        self.dotfiles = DotfileMap()
 
-    def _contents(self, dotfile_dir, filename):
-        filepath = os.path.join(dotfile_dir, filename)
+    def _contents(self, source_dirpath, filename):
+        filepath = os.path.join(source_dirpath, filename)
         with open(filepath, 'r') as f:
             contents = f.read()
         return contents
@@ -22,12 +21,9 @@ class Reader(object):
 
         """
         for item in os.walk(self.dotfiles_dir):
-            dotfile_dir = item[0]
-            if not Dotfile.has_dotfiles_prefix(dotfile_dir):
+            source_dirpath = item[0]
+            if not Dotfile.has_dotfiles_prefix(source_dirpath):
                 continue
             for filename in item[2]:
-                contents = self._contents(dotfile_dir, filename)
-                if not filename in self.dotfiles.keys():
-                    self.dotfiles[filename] = Dotfile(filename)
-                self.dotfiles[filename].add_file_from_source(dotfile_dir,
-                                                             contents)
+                contents = self._contents(source_dirpath, filename)
+                self.dotfiles.add(source_dirpath, filename, contents)
