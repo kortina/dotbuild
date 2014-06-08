@@ -36,12 +36,23 @@ class DotfileMap(object):
     def keyname(dirpath, filename):
         return os.sep.join(dirpath + [filename])
 
+    def __getitem__(self, keyname):
+        """convenience accessor for items in self.files"""
+        return self.files[keyname]
+
     def add(self, source_dirpath, source_filename, contents):
         source_module, dirpath = self._parse_dirpath(source_dirpath)
         keyname = self.keyname(dirpath, source_filename)
         if not keyname in self.files:
             self.files[keyname] = Dotfile(dirpath, source_filename)
         self.files[keyname].add_contents_from_source(source_module, contents)
+
+    def next_dotfile(self):
+        """iterate through filemap, yield next pair,
+        filename, dotfile
+        """
+        for dotfile in self.files.values():
+            yield dotfile
 
 
 class Dotfile(object):

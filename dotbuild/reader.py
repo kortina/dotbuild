@@ -6,7 +6,7 @@ class Reader(object):
 
     def __init__(self,  dotfiles_dir):
         self.dotfiles_dir = dotfiles_dir
-        self.dotfiles = DotfileMap()
+        self.dotfile_map = DotfileMap()
 
     def _contents(self, source_dirpath, filename):
         filepath = os.path.join(source_dirpath, filename)
@@ -26,4 +26,4 @@ class Reader(object):
                 continue
             for filename in item[2]:
                 contents = self._contents(source_dirpath, filename)
-                self.dotfiles.add(source_dirpath, filename, contents)
+                self.dotfile_map.add(source_dirpath, filename, contents)
