@@ -40,13 +40,18 @@ class WriterTests(TestCase):
         writer = Writer([], ".inputrc", "\n3", True)
         self.assertEqual(writer._symlink_link_path(),
                          os.path.join(os.environ.get('HOME'), ".inputrc"))
+
+        expected_path = os.path.abspath(os.path.join(writer.build_dirpath,
+                                                     ".inputrc"))
         self.assertEqual(writer._symlink_source_path(),
-                         os.path.join(writer.build_dirpath, ".inputrc"))
+                         expected_path)
         writer = Writer([".subd"], ".inputrc", "\n3", True)
         self.assertEqual(writer._symlink_link_path(),
                          os.path.join(os.environ.get('HOME'), ".subd"))
+        expected_path = os.path.abspath(os.path.join(writer.build_dirpath,
+                                                     ".subd"))
         self.assertEqual(writer._symlink_source_path(),
-                         os.path.join(writer.build_dirpath, ".subd"))
+                         expected_path)
 
     def test_write(self):
         self.writer.write()

@@ -47,10 +47,11 @@ class Writer(object):
         # path to the built file
         if not self._is_in_subd():
             # symlink directly to built file
-            return os.path.join(self.build_dirpath, self.filename)
+            path = os.path.join(self.build_dirpath, self.filename)
         else:
             # symlink to a folder contianing the built file
-            return os.path.join(self.build_dirpath, self.dirpath[0])
+            path = os.path.join(self.build_dirpath, self.dirpath[0])
+        return os.path.abspath(path)
 
     def _symlink_link_path(self):
         # file of link in user home directory pointing to built file or
