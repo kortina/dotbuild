@@ -1,5 +1,8 @@
 
 figure out how to handle directories (rsync merge them?)
+* actually, I think the best way to do this is to:
+    * foreach directory, create it
+    * foreach file in each directory, symlink it
 
 
 Add these options

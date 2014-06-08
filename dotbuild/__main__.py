@@ -26,10 +26,10 @@ def main():
     hooks.run_pre()
     reader = Reader(".")
     reader.read()
-    for filename, dotfile in reader.dotfiles.iteritems():
-        writer = Writer(filename=filename,
+    for dotfile in reader.dotfile_map.next_dotfile():
+        writer = Writer(dirpath=dotfile.dirpath,
+                        filename=dotfile.filename,
                         contents=dotfile.aggregated_contents(),
-                        symlink=dotfile.filename,
                         confirm_overwrite=confirm_overwrite)
         writer.write()
     hooks.run_post()
