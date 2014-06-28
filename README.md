@@ -1,6 +1,6 @@
 # dotbuild
 
-`dotbuild` makes it easer to manage and share dotfiles.
+`dotbuild` makes it easier to manage and share dotfiles.
 
 ## Installation
 
