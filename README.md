@@ -1,10 +1,15 @@
 # dotbuild
 
-`dotbuild` makes managing dotfiles more standardized and modular.
+`dotbuild` makes it easer to manage and share dotfiles.
 
 ## Installation
 
-    pip install dotbuild
+    pip install dotbuild # TODO: I need to add this to pypi
+    
+    # for now:
+    git clone git@github.com:kortina/dotbuild.git
+    cd dotbuild
+    pip install -e .
   
 ## Usage
 
@@ -16,10 +21,10 @@ NB: `dotbuild` always applies files in the special/default directory `dotfiles-u
 
 Suppose you run `dotbuild` in your `~/dotfiles` directory with the contents:
 
-    dotfiles-team-venmo-all
+    dotfiles-team-backend
         inputrc
         vimrc
-    dotfiles-team-venmo-web
+    dotfiles-team-web
         vim
             bundle
                 ctrlp
@@ -36,12 +41,12 @@ Suppose you run `dotbuild` in your `~/dotfiles` directory with the contents:
 In your `~/dotfiles` directory, `dotbuild` will create:
 
     build
-        inputrc   # = cat dotfiles-team-venmo-all/inputrc dotfiles-user/inputrc
+        inputrc   # = cat dotfiles-team-backend/inputrc dotfiles-user/inputrc
         vim
             bundle
                 ctrlp
                 pep8
-        vimrc     # = cat dotfiles-team-venmo-all/vimrc dotfiles-team-venmo-web/vimrc dotfiles-user/vimrc
+        vimrc     # = cat dotfiles-team-backend/vimrc dotfiles-team-web/vimrc dotfiles-user/vimrc
   
 And the symlinks in your home directory:
 
@@ -52,7 +57,7 @@ And the symlinks in your home directory:
 
 ## Tips
 
-We recommend the following strategy for managing your `dotfiles` repos:
+Recommended strategy for managing your `dotfiles` repos:
 
 * Maintan a project on your personal github containing all of your `dotfiles`.  
 * Maintain `dotfiles-user` as a local folder in your github `dotfiles` project.
