@@ -1,6 +1,7 @@
 import logging
 import os
 import sys
+import shutil
 
 
 def get_input(*args, **kwargs):
@@ -73,7 +74,11 @@ class Writer(object):
 
     def _remove_symlink(self):
         if self._symlink_link_exists():
-            os.unlink(self._symlink_link_path())
+            path = self._symlink_link_path()
+            if os.path.islink(path):
+                os.unlink(path)
+            else:
+                shutil.rmtree(path)
 
     def _create_symlink(self):
         # symlink from homedir to built file or directory containing built file
