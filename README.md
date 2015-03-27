@@ -1,3 +1,12 @@
+This project is DEPRECATED.
+
+I now configure my Mac and dotfiles with a few bash `setup` scripts you can find at:
+
+https://github.com/kortina/dotfiles
+
+
+
+
 # dotbuild
 
 `dotbuild` makes it easier to manage and share dotfiles.
